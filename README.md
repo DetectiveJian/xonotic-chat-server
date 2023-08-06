@@ -86,7 +86,7 @@ send_rqst !color ff0@0af@ Hello, wolrd!
 Server adds colors starting from `ff0` to `0af`, to the text
 ![alt text](examples/color.png "Color request example")
 
-These colors are claculated using [linear interpolation](https://en.wikipedia.org/wiki/Linear_interpolation), also known as lerp. Visualization of the color codes in above example:
+These colors are calculated using [linear interpolation](https://en.wikipedia.org/wiki/Linear_interpolation), also known as lerp. Visualization of the color codes in above example:
 
 ![alt text](examples/color_interpolation_example.png)
 
