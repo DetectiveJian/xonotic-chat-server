@@ -90,7 +90,7 @@ These colors are calculated using [linear interpolation](https://en.wikipedia.or
 
 ![alt text](examples/color_interpolation_example.png)
 
-an indepth dive into [lerp](https://youtu.be/YJB1QnEmlTs).
+[an indepth dive into lerp](https://youtu.be/YJB1QnEmlTs).
 
 ### Help
 Prints help message to xonotic's console.
@@ -102,13 +102,17 @@ Random colored chat
 ```
 send_rqst !random <text>
 ```
+
+![alt text](examples/random_chat.png)
+
 ### Rainbow
 Rainbow colored chat
 ```
 send_rqst !rainbow <text>
 ```
+![alt text](examples/rainbow_chat.png)
 
->I'd encourage you to add your own features!, as this project is intended to be a base template for others to build on.
+>Colors for both random and rainbow encoding are calculated with the same method, for random color encoding a random start value is used.
 
 # Keybindings
 
