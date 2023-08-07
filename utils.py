@@ -25,12 +25,12 @@ SOFTWARE.
 #---------------------------------------------#
 
 # Author: tofh
-# Last Updated: 06-08-2023
+# Last Updated: 07-08-2023
 # Description: utilities used by xonotic-chat-server...
-# TODO: Work on random and rainbow color encoding.
 
 #---------------------------------------------#
-import libcolors
+import libcolors, random
+
 
 #------------------------------#
 # text color encoding
@@ -42,15 +42,51 @@ def color(text, option="random", extra=None):
     add xonotic color code to the input text,
     option:
         color  - gradient colors
+        random - adds random colors
+        rainbow - adds rainbow colors
     """
 
     colored_text =  ""
     l = len(text)
+    if 360/l < 0.6:
+        inc = 1
+    else:
+        inc = 360/l
     # normalize the t function
     f = lambda t: t/l
 
+    # Randomly color the input text
+    if option == "random":
+        # get a random value
+        start = random.randint(0, 361)
+        for i in range(l):
+            current_char = text[i]
+            if start > 360:
+                start = 0
+
+            if current_char.isspace():
+                colored_text += current_char
+            else:
+                colored_text += libcolors.rgb2xon(libcolors.hsl2rgb(start, 100, 50)) + current_char
+                start += inc
+        return colored_text + "^7"
+
+    # Rainbow color
+    elif option == "rainbow":
+        start = 0
+        for i in range(l):
+            current_char = text[i]
+            if start > 360:
+                start = 0
+            if current_char.isspace():
+                colored_text += current_char
+            else:
+                colored_text += libcolors.rgb2xon(libcolors.hsl2rgb(start, 100, 50)) + current_char
+                start += inc
+        return colored_text + "^7"
+
     # if color option, then use the colors provided, to encode the colors accordingly
-    if option == "color":
+    elif option == "color":
         start = libcolors.xon2rgb(extra[0])
         stop = libcolors.xon2rgb(extra[1])
 
@@ -59,8 +95,7 @@ def color(text, option="random", extra=None):
             if current_char.isspace():
                 colored_text += current_char
             else:
-                color = libcolors.rgb2xon(libcolors.color_lerp(start, stop, f(i)))
-                colored_text += color + current_char
+                colored_text += libcolors.rgb2xon(libcolors.color_lerp(start, stop, f(i))) + current_char
         return colored_text + "^7"
 
 

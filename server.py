@@ -25,7 +25,7 @@ SOFTWARE.
 #------------------------------------------------------------------------------------------------------#
 
 # Author: tofh
-# Last Updated: 06-08-2023
+# Last Updated: 07-08-2023
 # Description: xonotic-chat-server is inspired by shazza-work's amazing xonotic_colour project.
 
 #------------------------------------------------------------------------------------------------------#
@@ -56,6 +56,14 @@ def server():
         data = query.removeprefix("!say")
         response = f"say {data}"
 
+    # Random colored chat
+    elif query.startswith("!random"):
+        data = query.removeprefix("!random")
+        response = "say " + utils.color(data)
+
+    elif query.startswith("!rainbow"):
+        data = query.removeprefix("!rainbow")
+        response = "say " + utils.color(data, option="rainbow")
     # add colors to the data specified by the user
     # example: !coolor fff# 000# Hello, world!
     elif query.startswith("!color"):

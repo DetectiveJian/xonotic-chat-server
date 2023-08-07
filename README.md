@@ -97,8 +97,17 @@ Prints help message to xonotic's console.
 ```
 send_rqst !help
 ```
+### Random
+Random colored chat
+```
+send_rqst !random <text>
+```
+### Rainbow
+Rainbow colored chat
+```
+send_rqst !rainbow <text>
+```
 
->Note: Some features like random and rainbow color encoding are incomplete.
 >I'd encourage you to add your own features!, as this project is intended to be a base template for others to build on.
 
 # Keybindings
@@ -106,9 +115,7 @@ send_rqst !help
 `client-config.cfg` has a few binds by default:
 ```
 bind p "commmadmode send_rqst" // key p is bound to directly access the send_rqst function to send any query.
-bind o "commandmode send_rqst !color ff0@0af@" // key o for user defined color encoding.
+bind o "commandmode send_rqst !random" // key o for random color encoding.
 ```
 You can add more keybindings yourself in `user-config.cfg`.
 
-# TODO
- - Add random and rainbow color encoding functions.

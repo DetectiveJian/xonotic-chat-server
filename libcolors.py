@@ -25,13 +25,14 @@ SOFTWARE.
 #--------------------------------------------------------#
 
 # Author: tofh
-# Last Updated: 06-08-2023
+# Last Updated: 07-08-2023
 # Library containing color manipulation tools...
 
 #--------------------------------------------------------#
 
-import random
-
+#===================================#
+# RGB Colorspace
+#===================================#
 
 def color_lerp(a, b, t):
     """
@@ -100,6 +101,7 @@ def css2rgb(c):
 
     return (r, g, b)
 
+
 def xonfilter(c):
     """
     Remove Xon color codes from input string.
@@ -156,13 +158,6 @@ def xonfilter(c):
     # return the filtered string
     return text
 
-def rgb_shuffle(color):
-    """
-    Shuffles the rgb value
-    """
-    color = list(color)
-    random.shuffle(color)
-    return tuple(color)
 
 def norm(a):
     """
@@ -186,5 +181,50 @@ def denorm(a):
     b = f(a[2])
 
     return (r, g, b)
+
+
+#======================================#
+# HSL Colorspace
+#======================================#
+
+# HSL to RGB
+def hsl2rgb(h, s, l):
+    """
+    Converts HSL colorspace to RGB colorspace
+    """
+    # normalizing
+    h /= 360
+    s /= 100
+    l /= 100
+
+    if s == 0:
+        r = g = b = l * 255
+    else:
+        if l < 0.5:
+            q = l * (1 + s)
+        else:
+            q = l + s - l * s
+        p = 2 * l - q
+
+        r = hue2rgb(p, q, h + 1/3)
+        g = hue2rgb(p, q, h)
+        b = hue2rgb(p, q, h - 1/3)
+
+    return (round(r * 255), round(g * 255), round(b * 255))
+
+def hue2rgb(p, q, t):
+    if t < 0:
+        t += 1
+    elif t > 1:
+        t -= 1
+
+    if t < 1/6:
+        return p + (q - p) * 6 * t
+    elif t < 1/2:
+        return q
+    elif t < 2/3:
+        return p + (q - p) * (2/3 - t) * 6
+    else:
+        return p
 
 
