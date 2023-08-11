@@ -102,7 +102,7 @@ These colors are calculated using [linear interpolation](https://en.wikipedia.or
 ### Random Color
 Adds random color gradient to the input text.
 ```
-send_rqst <text>
+send_rqst !randcolor <text>
 ```
 
 ## Rainbow
