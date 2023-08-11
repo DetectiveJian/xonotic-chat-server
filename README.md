@@ -68,6 +68,12 @@ General case:
 send_rqst <cmd> <data>
 ```
 
+### Help
+Prints help message to xonotic's console.
+```
+send_rqst !help
+```
+
 ### Ping
 Client:
 ```
@@ -76,6 +82,7 @@ send_rqst !ping
 
 ![alt text](examples/ping.png "Ping request")
 
+## Color Gradient
 ### Color
 SYNTAX: `send_rqst !color start@stop@ <text>` adds color from `start` to `stop`, to the text provided.
 
@@ -92,15 +99,16 @@ These colors are calculated using [linear interpolation](https://en.wikipedia.or
 
 [an indepth dive into lerp](https://youtu.be/YJB1QnEmlTs).
 
-### Help
-Prints help message to xonotic's console.
+### Random Color
+Adds random color gradient to the input text.
 ```
-send_rqst !help
+send_rqst <text>
 ```
-### Random
-Random colored chat
+
+## Rainbow
+### Random Rainbow
 ```
-send_rqst !random <text>
+send_rqst !randbow <text>
 ```
 
 ![alt text](examples/random_chat.png)
@@ -119,7 +127,7 @@ send_rqst !rainbow <text>
 `client-config.cfg` has a few binds by default:
 ```
 bind p "commmadmode send_rqst" // key p is bound to directly access the send_rqst function to send any query.
-bind o "commandmode send_rqst !random" // key o for random color encoding.
+bind o "commandmode send_rqst !randbow" // key o for random rainbow encoding.
 ```
 You can add more keybindings yourself in `user-config.cfg`.
 

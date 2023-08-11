@@ -25,7 +25,7 @@ SOFTWARE.
 #---------------------------------------------#
 
 # Author: tofh
-# Last Updated: 07-08-2023
+# Last Updated: 10-08-2023
 # Description: utilities used by xonotic-chat-server...
 
 #---------------------------------------------#
@@ -36,67 +36,73 @@ import libcolors, random
 # text color encoding
 #------------------------------#
 
-
-def color(text, option="random", extra=None):
+## HSL ENCODE
+def encode_hsl(text, h=0, s=100, l=50):
     """
-    add xonotic color code to the input text,
-    option:
-        color  - gradient colors
-        random - adds random colors
-        rainbow - adds rainbow colors
+    Encode input text using hsl colorspace
     """
-
-    colored_text =  ""
-    l = len(text)
-    if 360/l < 0.6:
-        inc = 1
+    colored_text = ""
+    if 360 / len(text) < 0.6:
+        inc_h = 1
     else:
-        inc = 360/l
-    # normalize the t function
-    f = lambda t: t/l
+        inc_h = round(360/len(text))
 
-    # Randomly color the input text
-    if option == "random":
-        # get a random value
-        start = random.randint(0, 361)
-        for i in range(l):
-            current_char = text[i]
-            if start > 360:
-                start = 0
+    for i in range(len(text)):
+        current_char = text[i]
+        if current_char.isspace():
+            colored_text += current_char
+        else:
+            if h > 360:
+                h = 0
+            colored_text += libcolors.rgb2xon(libcolors.hsl2rgb(h, s, l)) + current_char
+            h += inc_h
+    return colored_text + "^7"
 
-            if current_char.isspace():
-                colored_text += current_char
-            else:
-                colored_text += libcolors.rgb2xon(libcolors.hsl2rgb(start, 100, 50)) + current_char
-                start += inc
-        return colored_text + "^7"
+## RGB ENCODE
+def encode_rgb(text, start, stop):
+    """
+    Encode input text using rgb colorspace
+    """
+    colored_text = ""
+    for i in range(len(text)):
+        current_char = text[i]
+        if current_char.isspace():
+            colored_text += current_char
+        else:
+            colored_text += libcolors.rgb2xon(libcolors.color_lerp(start, stop, i / len(text))) + current_char
+    return colored_text + "^7"
 
-    # Rainbow color
-    elif option == "rainbow":
-        start = 0
-        for i in range(l):
-            current_char = text[i]
-            if start > 360:
-                start = 0
-            if current_char.isspace():
-                colored_text += current_char
-            else:
-                colored_text += libcolors.rgb2xon(libcolors.hsl2rgb(start, 100, 50)) + current_char
-                start += inc
-        return colored_text + "^7"
 
-    # if color option, then use the colors provided, to encode the colors accordingly
-    elif option == "color":
-        start = libcolors.xon2rgb(extra[0])
-        stop = libcolors.xon2rgb(extra[1])
+# rainbow
+def rainbow_encode(text):
+    """
+    add rainbow colors
+    """
+    return encode_hsl(text)
 
-        for i in range(l):
-            current_char = text[i]
-            if current_char.isspace():
-                colored_text += current_char
-            else:
-                colored_text += libcolors.rgb2xon(libcolors.color_lerp(start, stop, f(i))) + current_char
-        return colored_text + "^7"
+def rand_rainbow_encode(text):
+    """
+    Add random rainbow colors, using a random starting point
+    """
+    h = random.randint(0, 361)
+    return encode_hsl(text, h=h)
+
+
+# Colors
+def color_encode(text, start, stop):
+    """
+    add color gradient, takes xonotic color code value without the carat
+    """
+    return encode_rgb(text, libcolors.xon2rgb(start), libcolors.xon2rgb(stop))
+
+
+def rand_color_encode(text):
+    """
+    add random color gradient, using random start stop values
+    """
+    start = libcolors.hsl2rgb(random.randint(0, 361), 100, 50)
+    stop = libcolors.hsl2rgb(random.randint(0, 361), 100, 50)
+    return encode_rgb(text, start, stop)
 
 
 #-------------------------#
@@ -111,7 +117,20 @@ def help():
     message = "echo;"
     guide = open("help.txt", "r")
     for line in guide.readlines():
-        message += f'echo "{line.strip()}";'
+        message += f'echo "{line.rstrip()}";'
     guide.close()
     return message + "echo"
+
+def validColorCode(color_code):
+    """
+    Checks if the xon color code is valid, boolen result
+    """
+    if len(color_code) == 3:
+        try:
+            if int(color_code, 16) <= 4095:
+                return True
+        except:
+            return False
+    else:
+        return False
 

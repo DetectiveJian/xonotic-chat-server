@@ -1,25 +1,11 @@
-+------------------------------------------------------------
-|             ^2 XONOIC CHAT SERVER HELP ^7
-+^1----------------------------------------------------------^7
-|
-|        ^2!help^7 - ^3print this help message^7
-|------------------ ^2Chat Options^7 ------------------------
-|
-|        ^2!random^7 - ^3add random colors to text^7
-|                    ^3USAGE: !random <TEXT>^7
-|------------------------------------------------------------
-|
-|        ^2!rainbow^7 - ^3add rainbow colors to text^7
-|                     ^3USAGE: !rainbow <TEXT>^7
-|------------------------------------------------------------
-|
-|        ^2!color^7 - ^3add gradient effect to text^7
-|                   ^3USAGE: !color ff0@ 0ff@ <TEXT>^7
-|------------------------------------------------------------
-|
-|-------------------------MISC-------------------------------
-|
-|        ^2!ping^7 - ^3test request, server sends back^7
-|                  ^3a pong response...^7
-|
-+^1----------------------------------------------------------^7
+                    ^3Xonotic-Chat-Server^7
+^1--------------------------------------------------------------------------------------------------^7
+    ^3Command^7   |             ^3Usage^7
+^1--------------------------------------------------------------------------------------------------^7
+ ^2!help^7        | ^2send_rqst !help ^3( prints this message )^7
+ ^2!randbow^7     | ^2send_rqst !randbow <text> ^3( adds random rainbow color )^7
+ ^2!rainbow^7     | ^2send_rqst !rainbow <text> ^3( adds rainbow colors  )^7
+ ^2!randcolor^7   | ^2send_rqst !randcolor <text> ^3( adds random color gradient )^7
+ ^2!color^7       | ^2send_rqst !randcolor <start>@<stop>@ <text> ^3( user defined color gradient )^7
+ ^2!ping^7        | ^2send_rqst !ping ^3( test command, pong response... )^7
+^1--------------------------------------------------------------------------------------------------^7

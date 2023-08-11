@@ -25,14 +25,14 @@ SOFTWARE.
 #------------------------------------------------------------------------------------------------------#
 
 # Author: tofh
-# Last Updated: 07-08-2023
+# Last Updated: 10-08-2023
 # Description: xonotic-chat-server is inspired by shazza-work's amazing xonotic_colour project.
 
 #------------------------------------------------------------------------------------------------------#
 
 
 from flask import Flask, request
-import utils
+from utils import *
 import libcolors
 
 # Server listening for requests
@@ -44,48 +44,54 @@ def server():
     Server listening for queries
     """
     # http:127.0.0.1:5000/server?query=<cmd><stuff>
+
     # filter all the xonotic color codes from the query
     query = libcolors.xonfilter(request.args.get("query"))
     print(f"[query] {query}")
 
-    response = ""
+    # random rainbow colors
+    if query.startswith("!randbow"):
+        text = query.removeprefix("!randbow")
+        return "say " + rand_rainbow_encode(text)
 
-    # look for commands
-    # if the request is !say, send back the data as is
-    if query.startswith("!say"):
-        data = query.removeprefix("!say")
-        response = f"say {data}"
-
-    # Random colored chat
-    elif query.startswith("!random"):
-        data = query.removeprefix("!random")
-        response = "say " + utils.color(data)
-
+    # rainbow colors
     elif query.startswith("!rainbow"):
-        data = query.removeprefix("!rainbow")
-        response = "say " + utils.color(data, option="rainbow")
-    # add colors to the data specified by the user
-    # example: !coolor fff# 000# Hello, world!
+        text = query.removeprefix("!rainbow")
+        return "say " + rainbow_encode(text)
+
+    # random colors
+    elif query.startswith("!randcolor"):
+        text = query.removeprefix("!randcolor")
+        return "say " + rand_color_encode(text)
+
+    # user defined colors
     elif query.startswith("!color"):
         data = query.removeprefix("!color").split("@", 2)
-        if len(data) == 3:
-            color = [data[0].strip(), data[1].strip()]
-            text = data[2]
-            response = "say " + utils.color(text, option="color", extra=color)
+        if len(data) > 2:
+            text = data[-1].strip()
+            start = data[0].strip()
+            stop = data[1].strip()
+
+            if validColorCode(start):
+                if validColorCode(stop):
+                    return "say " + color_encode(text, start, stop)
+                else:
+                    return f"echo ^7[^2COLOR ENCODE^7]^3 INVALID STOP COLOR CODE^7: ^1{stop}^7 ^3in ^2{query}^7"
+            else:
+                return f"echo ^7[^2COLOR ENCODE^7]^3 INVALID START COLOR CODE^7: ^1{start}^7 ^3in ^2{query}^7 "
         else:
-            response = "echo ^1RESPONSE: ^7[^2!color^7] ^3INVALID DATA PROVIDED^7"
+            return f"echo ^7[^2COLOR ENCODE^7]^3 INVALID NO. OF ARGUMENTS^7: ^1{query}^7"
 
     # display help in xonotic's console
     elif query.startswith("!help"):
-        response = utils.help()
+        return help()
 
     elif query.startswith("!ping"):
-        response = "echo ^1RESPONSE:^2 pong"
+        return "echo ^1RESPONSE:^2 pong"
 
     # if none of the above requests, tell user the query is invalid
     else:
-        response = f"echo ^1INVALID REQUEST:^2 {query}^7"
-    return response
+        return f"echo ^1INVALID REQUEST:^2 {query}^7"
 
 if __name__ == "__main__":
     app.run()
