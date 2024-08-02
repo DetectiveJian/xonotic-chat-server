@@ -1,7 +1,4 @@
 # Xonotic-Chat-Server
-
-This project is inspired by Shazza-works' amazing [xonotic_color](https://github.com/shazza-works/xonotic_colour) project.
-
 ## Setup instructions
 
 >This project has been tested on python 3.11.3.
